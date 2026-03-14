@@ -31,7 +31,7 @@ void chip8_init(Chip8 *c) {
 
     // 2. set PC
     c->pc = 0x200; // set PC to 0x200 (where ROM loads)
-    printf("PC: %x", c->pc); 
+    //printf("PC: %x", c->pc); 
 
     // 3. copy font into ram
     memcpy(c->ram + 0x050, font, sizeof(font)); // memcpy(dest, src, size);
@@ -68,7 +68,7 @@ void chip8_cycle(Chip8 *c) {
 
     // ---- Decode ----
     // extract nibbles from opcode
-    // mask needed bit with &, shift left to isolate it
+    // mask needed byte with &, shift left to isolate it
     // ex: (0x1234) 0001 0010 0011 0100 & (0xF000) = 1111 0000 0000 000 >> 12 = 0001 0000 0000 0000
     uint8_t     type =  (opcode & 0xF000) >> 12;    // bits 0-3 indicate opcode type
     uint8_t     X =     (opcode & 0x0F00) >> 8;     // 2nd nibble, looks up Vx
@@ -84,12 +84,12 @@ void chip8_cycle(Chip8 *c) {
             // 00E0 - clear display
             switch (NN) {
                 case 0xE0: 
-                // 00E0 - clear display
-
+                    // 00E0 - clear display
+                    memset(c->display, 0, sizeof(c->display));
                     break;
                 
                 //case 0xEE:
-                // 00EE - return from subroutine
+                    // 00EE - return from subroutine
 
                 //break;
             }
@@ -117,6 +117,26 @@ void chip8_cycle(Chip8 *c) {
 
         case 0xD:
             // DXYN - draw sprite
+            // draws an N-pixel-tall sprite at screen position (VX, VY), 
+            // reading sprite data from RAM at address I.
+            uint8_t xPos = c->V[X] % 64;
+            uint8_t yPos = c->V[Y] % 32;
+            c->V[0xF] = 0;
+
+            for (int row = 0; row < N; row++) {
+                uint16_t sprite = c->ram[c->I + row];
+
+                for (int col = 0; col < 8; col++) {
+                    if (sprite & (0x80 >> col)) {
+                        int idx = (yPos + row) * 64 + (xPos + col);
+                        if (c->display[idx]) c->V[0xF] = 1;
+                        c->display[idx] ^= 1;
+                    }
+                }
+            }
+
+            c->draw_flag = 1;
+            break;
 
             break;
 
