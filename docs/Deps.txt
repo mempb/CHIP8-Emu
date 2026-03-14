@@ -1,10 +1,10 @@
-- MinGW via MSYS2: 
+- MinGW and SLD2 via MSYS2: 
     - 'pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain'
-    - Add 'C:\msys64\ucrt64\bin' to path
+    - 'pacman -S mingw-w64-ucrt-x86_64-SDL2'
 
 - CMake
 
-- SDL2L:
-    - https://github.com/libsdl-org/SDL/releases/tag/release-2.30.3
-    - SDL2-devel-2.30.3-mingw.zip
-    - Extract to C:\SDL2
+Build:
+- copy 'C:\Dev\msys64\ucrt64\bin\SDL2.h' to build folder
+- 'cmake -G "MinGW Makefiles" ..'
+- 'cmake --build .'
