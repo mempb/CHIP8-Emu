@@ -1,3 +1,4 @@
+Dependencies:
 - MinGW and SLD2 via MSYS2: 
     - 'pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain'
     - 'pacman -S mingw-w64-ucrt-x86_64-SDL2'
@@ -5,6 +6,6 @@
 - CMake
 
 Build:
-- copy 'C:\Dev\msys64\ucrt64\bin\SDL2.h' to build folder
+- copy 'C:\Dev\msys64\ucrt64\bin\SDL2.dll' to build folder
 - 'cmake -G "MinGW Makefiles" ..'
 - 'cmake --build .'

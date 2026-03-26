@@ -38,8 +38,8 @@ void chip8_init(Chip8 *c) {
 }
 
 // open the file, read bytes into RAM starting at 0x200
-void chip8_load_rom(Chip8 *c, const char *path) {
-    FILE *f = fopen(path, "rb"); // open rom, "rb" = read binary
+void chip8_load_rom(Chip8 *c, const char *romPath) {
+    FILE *f = fopen(romPath, "rb"); // open rom, "rb" = read binary
 
     if (f == NULL) { // handle failure
         printf("Failed to open ROM\n");
