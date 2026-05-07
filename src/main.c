@@ -1,12 +1,10 @@
-#define SDL_MAIN_HANDLED
-
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <dirent.h>     // opendir, readdir, closedir
 
 #include "chip8.h"
 
-#define ROM_DIR "C:/Dev/Code/CHIP-8/ROMs"
+#define ROM_DIR "../ROMs"
 #define MAX_ROMS 32     // Max roms read, used for array size
 #define MAX_PATH 256    // Max rom path, used for array size
 
