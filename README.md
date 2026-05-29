@@ -1,12 +1,12 @@
 # CHIP-8 Emulator
 
-A CHIP-8 emulator written in C with SDL2. Built as a learning project to get hands-on with emulation, low-level C, and eventually work up to a full NES emulator.
+A CHIP-8 emulator written in C with SDL2. Built as a learning project to get hands-on with emulation, low-level C, and eventually work up to a full NES emulator or something similar.
 
 ---
 
 ## What is CHIP-8?
 
-CHIP-8 is an interpreted programming language from the 1970s, originally designed to make game development easier on early microcomputers. It's not a real hardware system — it's a virtual machine that runs on top of whatever hardware you have.
+CHIP-8 is an interpreted programming language from the 1970s, originally designed to make game development easier on early microcomputers. It's not a real hardware system, but a virtual machine that runs on top of whatever hardware you have.
 
 It's become the "hello world" of emulator development because it's simple enough to build in a weekend but teaches you everything you need to know before tackling something like the NES or Game Boy.
 
@@ -72,14 +72,13 @@ This is a work in progress. Here's where things are at:
 sudo apt install build-essential cmake libsdl2-dev
 ```
 
-WSL note: SDL2 GUI output requires WSL2 + Windows 11 (WSLg). Run `wsl --set-version <distro> 2` if you're on WSL1.
-
 ---
 
 ## Building
 
 ```sh
-mkdir build && cd build
+mkdir build
+cd build
 cmake ..
 cmake --build .
 ./CHIP-8
