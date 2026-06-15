@@ -27,39 +27,33 @@ It's become the "hello world" of emulator development because it's simple enough
 - **Sound timer:** 8-bit, same as delay timer; emits a beep while non-zero
 - **Registers:** 16 × 8-bit general-purpose (V0–VF); VF doubles as a flag register
 
-### Opcodes
+### Currently Implemented Opcodes
 
 | Opcode | Description |
 |--------|-------------|
-| `00E0` | Clear screen |
-| `00EE` | Return from subroutine |
-| `1NNN` | Jump to address NNN |
-| `2NNN` | Call subroutine at NNN |
-| `6XNN` | Set register VX = NN |
-| `7XNN` | Add NN to register VX |
-| `ANNN` | Set index register I = NNN |
-| `DXYN` | Draw sprite at (VX, VY), N bytes tall |
+| `00E0` | Clears screen |
+| `00EE` | Returns from subroutine |
+| `1NNN` | Jumps to address NNN |
+| `2NNN` | Calls subroutine at NNN |
+| `3XNN` | Skips if reg VX == NN |
+| `4XNN` | Skips if reg VX != NN |
+| `5XY0` | skips if reg VX == VY |
+| `6XNN` | Set reg VX = NN |
+| `7XNN` | Adds NN to register VX |
+| `8XYN` **(in progress)** | ALU - Arithmetic and Bitwise operations |
+| `9XY0` | Skips if VX != VY |
+| `ANNN` | Sets index register I = NNN |
+| `DXYN` | Draws sprite at (VX, VY), N bytes tall |
 
 ---
-
-## Status
-
-This is a work in progress. Here's where things are at:
-
-**Working**
-- CPU fetch/decode/execute loop
-- ROM picker — scans a directory and lets you choose a ROM at launch
-- SDL2 window and renderer
-- Opcodes: `00E0`, `1NNN`, `6XNN`, `7XNN`, `ANNN`, `DXYN`
-- IBM Logo ROM
 
 ![CHIP-8 running IBM logo](IBM_LOGO.png)
 
 **In progress / TODO**
 - Remaining opcodes
 - Keyboard input
+- Scalable / resiazable window
 - Timers (delay + sound)
-- Subroutine support (`00EE`, `2NNN`)
 - Build script
 
 ---
@@ -69,6 +63,7 @@ This is a work in progress. Here's where things are at:
 **Linux / WSL (Ubuntu/Debian):**
 
 ```sh
+sudo apt update
 sudo apt install build-essential cmake libsdl2-dev
 ```
 

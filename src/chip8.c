@@ -79,25 +79,58 @@ void chip8_cycle(Chip8 *c) {
 
     // ---- Execute ----
     // switch on first nibble (type)
-    switch (type) {
+    switch (type) 
+    {
         case 0x0:
-            // 00E0 - clear display
-            switch (NN) {
+            switch (NN) 
+            {
                 case 0xE0: 
                     // 00E0 - clear display
                     memset(c->display, 0, sizeof(c->display));
                     break;
                 
-                //case 0xEE:
-                    // 00EE - return from subroutine
-
-                //break;
+                case 0xEE:
+                    // 00EE - return from subroutine 
+                    c->sp--;   //Decrement sp 
+                    c->pc = c->stack[c->sp]; // Pop PC at stack location sp
+                break;
             }
             break;
 
         case 0x1:
             // 1NNN - jump
-            c->pc = NNN;
+            c->pc = NNN; 
+            break;
+
+        case 0x2:
+            // 2NNN - call subroutine
+            c->stack[c->sp] = c->pc; // Store value of PC to address of stack at SP
+            c->sp++; // Increment sp
+            c->pc = NNN; // Jump to NNN (subroutine)
+            break;
+
+        case 0x3:
+            // 3XNN - skips if VX == NN
+            if (c->V[X] == NN)
+            {
+                c->pc += 2;
+            }
+            break;
+
+        case 0x4:
+            // 4XNN - skips if VX != NN
+            if (c->V[X] != NN)
+            {
+                c->pc += 2;
+            }
+            break;
+
+        case 0x5:
+            // 5XY0 - skips if VX == VY
+            if (c->V[X] == c->V[Y])
+            {
+                c->pc += 2;
+            }
             break;
 
         case 0x6:
@@ -110,6 +143,65 @@ void chip8_cycle(Chip8 *c) {
             c->V[X] += NN;
             break;
 
+        // case 0x8:
+        // // ALU - performs bitwise operations and arithmetic
+        //     switch (N)
+        //     {
+        //         case 0x0:
+        //             // VX = VY
+        //             c->V[X] = c->V[Y];
+        //             break;
+
+        //         case 0x1:
+        //             // VX OR VY
+
+        //             break;
+
+        //         case 0x2:
+        //             // VX AND VY
+
+        //             break;
+
+        //         case 0x3:
+        //             // VX XOR VY
+
+        //             break;
+
+        //         case 0x4:
+        //             // VX + VY, VF = 1 if overflow
+
+        //             break;
+
+        //         case 0x5:
+        //             // VX - VY, VF = 1 if VX >= VY
+
+        //             break;
+
+        //         case 0x6:
+        //             // VF = (VX AND 1), then VX right shift 1
+
+        //             break;
+
+        //         case 0x7:
+        //             // VX = VY - VX, VF = 1 if VY >= VX
+
+        //             break;
+
+        //         case 0xE:
+        //             // VF = ((VX right shift 7) AND 1), then VX left shit 1
+
+        //             break;
+        //     }
+        //     break;
+
+        case 0x9:
+            // 9XY0 - skips if VX != VY
+            if (c->V[X] != c->V[Y])
+            {
+                c->pc += 2;
+            }
+            break;
+
         case 0xA:
             // ANNN — set index register I to NNN
             c->I = NNN;
@@ -118,16 +210,19 @@ void chip8_cycle(Chip8 *c) {
         case 0xD:
             // DXYN - draw sprite
             // draws an N-pixel-tall sprite at screen position (VX, VY), 
-            // reading sprite data from RAM at address I.
+            // reading sprite data from RAM at address I
             uint8_t xPos = c->V[X] % 64;
             uint8_t yPos = c->V[Y] % 32;
             c->V[0xF] = 0;
 
-            for (int row = 0; row < N; row++) {
+            for (int row = 0; row < N; row++) 
+            {
                 uint16_t sprite = c->ram[c->I + row];
 
-                for (int col = 0; col < 8; col++) {
-                    if (sprite & (0x80 >> col)) {
+                for (int col = 0; col < 8; col++) 
+                {
+                    if (sprite & (0x80 >> col)) 
+                    {
                         int idx = (yPos + row) * 64 + (xPos + col);
                         if (c->display[idx]) c->V[0xF] = 1;
                         c->display[idx] ^= 1;
@@ -138,11 +233,8 @@ void chip8_cycle(Chip8 *c) {
             c->draw_flag = 1;
             break;
 
-            break;
-
         default:
             printf("Unknown opcode: 0x%04x\n", opcode);
             break;
     }
-
 }

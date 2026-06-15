@@ -6,36 +6,7 @@
 
 #define ROM_DIR "../ROMs"
 #define MAX_ROMS 32     // Max roms read, used for array size
-#define MAX_PATH 256    // Max rom path, used for array size
-
-SDL_Renderer *initializeSDL();
-void renderSDL(SDL_Renderer *renderer, Chip8 *c);
-int pickRom(char outPath[MAX_PATH]);
-
-int main(int argc, char* argv[]) {
-    SDL_Renderer *renderer = initializeSDL();
-    if (renderer == NULL) return 1;
-
-    Chip8 c;
-    chip8_init(&c);
-    printf("CHIP-8 Initialized\n");
-
-
-    char romPath[MAX_PATH];
-    int romSelected = pickRom(romPath);
-    if (romSelected != 0) {
-        printf("No ROM selected.\n");
-        return 1;
-    }
-
-    printf("ROM Path: %s\n", romPath);
-    chip8_load_rom(&c, romPath);
-    printf("ROM Loaded\n");
-
-    while (1) {
-        renderSDL(renderer, &c);
-    }
-}
+#define MAX_PATH 300    // Max rom path, used for array size
 
 SDL_Renderer *initializeSDL() {
     // Initialize SDL
@@ -43,16 +14,15 @@ SDL_Renderer *initializeSDL() {
         printf("SDL_Init failed: %s\n", SDL_GetError());
         return NULL;
     }
-    printf("SDL Initialized\n");
 
     // Create and render SDL window
     SDL_Window *window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 320, 0);
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
-    printf("SDL Window Rendered\n");
+    //SDL_RenderSetLogicalSize(renderer, 64, 32);
     return renderer;
 }
 
-void renderSDL(SDL_Renderer *renderer, Chip8 *c) {
+void updateSDL(SDL_Renderer *renderer, Chip8 *c) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
@@ -118,9 +88,40 @@ int pickRom(char outPath[MAX_PATH]) {
     // Allow user to choose ROM
     printf("Choose: ");
     int choice;
-    if (scanf("%d", &choice) != 1 || choice < 1 || choice > romCount) return -1;   // Fail if choice is invalid
+    if (scanf("%d", &choice) != 1 || choice < 1 || choice > romCount) 
+    {
+        return -1;   // Fail if choice is invalid
+    }
 
     // Copy chosen ROM string to outPath, return
     strncpy(outPath, roms[choice - 1], MAX_PATH);
     return 0;
+}
+
+int main(int argc, char* argv[]) 
+{
+    // Rom Pick
+    char romPath[MAX_PATH];
+    int romSelected = pickRom(romPath);
+    if (romSelected != 0) 
+    {
+        printf("No ROM selected.\n");
+        return 1;
+    }
+
+    // Chip8
+    Chip8 c;
+    chip8_init(&c);
+
+    // Load ROM
+    chip8_load_rom(&c, romPath);
+
+    // Open SDL Window
+    SDL_Renderer *renderer = initializeSDL();
+    if (renderer == NULL) return 1;
+
+    // Render Loop
+    while (1) {
+        updateSDL(renderer, &c);
+    }
 }
