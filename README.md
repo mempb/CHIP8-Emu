@@ -1,6 +1,6 @@
 # CHIP-8 Emulator
 
-A CHIP-8 emulator written in C with SDL2. Built as a learning project to get hands-on with emulation, low-level C, and eventually work up to a full NES emulator or something similar.
+A CHIP-8 emulator written in C with SDL2. Built as a learning project to get hands-on with emulation and low-level C.
 
 ---
 
@@ -8,7 +8,7 @@ A CHIP-8 emulator written in C with SDL2. Built as a learning project to get han
 
 CHIP-8 is an interpreted programming language from the 1970s, originally designed to make game development easier on early microcomputers. It's not a real hardware system, but a virtual machine that runs on top of whatever hardware you have.
 
-It's become the "hello world" of emulator development because it's simple enough to build in a weekend but teaches you everything you need to know before tackling something like the NES or Game Boy.
+It's become the "hello world" of emulator development because it's simple to build but teaches you everything you need to know before tackling something like the NES or Game Boy.
 
 ---
 
@@ -54,6 +54,7 @@ It's become the "hello world" of emulator development because it's simple enough
 - Keyboard input
 - Scalable / resiazable window
 - Timers (delay + sound)
+- Windows build
 - Build script
 
 ---
