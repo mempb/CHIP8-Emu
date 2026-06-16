@@ -1,6 +1,6 @@
 # CHIP-8 Emulator
 
-A CHIP-8 emulator written in C with SDL2. Built as a learning project to get hands-on with emulation and low-level C.
+A CHIP-8 emulator written in C with SDL2. Built as a learning project to gain low-level C experience and emulation.
 
 ---
 
@@ -12,7 +12,7 @@ It's become the "hello world" of emulator development because it's simple to bui
 
 ---
 
-## Specifications
+## Specs
 
 - **Memory:** 4 KB RAM
   - `0x000–0x1FF` — reserved (interpreter, font data lives here)
@@ -46,6 +46,12 @@ It's become the "hello world" of emulator development because it's simple to bui
 | `DXYN` | Draws sprite at (VX, VY), N bytes tall |
 
 ---
+
+**Working**
+- CPU fetch/decode/execute loop
+- ROM picker — scans a directory and lets you choose a ROM at launch
+- SDL2 window and renderer
+- IBM Logo ROM
 
 ![CHIP-8 running IBM logo](IBM_LOGO.png)
 
