@@ -47,11 +47,7 @@ It's become the "hello world" of emulator development because it's simple to bui
 
 ---
 
-**Working**
-- CPU fetch/decode/execute loop
-- ROM picker — scans a directory and lets you choose a ROM at launch
-- SDL2 window and renderer
-- IBM Logo ROM
+**IBM Logo ROM**
 
 ![CHIP-8 running IBM logo](IBM_LOGO.png)
 
