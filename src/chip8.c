@@ -143,56 +143,59 @@ void chip8_cycle(Chip8 *c) {
             c->V[X] += NN;
             break;
 
-        // case 0x8:
-        // // ALU - performs bitwise operations and arithmetic
-        //     switch (N)
-        //     {
-        //         case 0x0:
-        //             // VX = VY
-        //             c->V[X] = c->V[Y];
-        //             break;
+        case 0x8:
+        // 8XYN - ALU: performs bitwise operations and arithmetic
+            switch (N)
+            {
+                case 0x0:
+                    // VX = VY
+                    c->V[X] = c->V[Y];
+                    break;
 
-        //         case 0x1:
-        //             // VX OR VY
+                case 0x1:
+                    // VX OR VY
+                    c->V[X] |= c->V[Y];
+                    break;
 
-        //             break;
+                case 0x2:
+                    // VX AND VY
+                    c->V[X] &= c->V[Y];
+                    break;
 
-        //         case 0x2:
-        //             // VX AND VY
+                case 0x3:
+                    // VX XOR VY
+                    c->V[X] ^= c->V[Y];
+                    break;
 
-        //             break;
+                case 0x4:
+                    // VX + VY, VF = 1 if overflow
+                    uint16_t sum = c->V[X] + c->V[Y];   // 16 bit, holds up to 510
+                    c->V[X] = sum & 0xFF;   // Put lower byte in V[X]
+                    c->V[0xF] = (sum > 255) ? 1 : 0;    // carry flag, set 1 if sum > 255, otherwise 0
+                    break;
 
-        //         case 0x3:
-        //             // VX XOR VY
+            //     case 0x5:
+            //         // VX - VY, VF = 1 if VX >= VY
+            //         uint8_t diff = c->V[X] - c->V[Y]; 
+            //         c->V[0xF] = (c->V[X] >= c->V[Y]) ? 1 : 0; 
+            //         break;
 
-        //             break;
+            //     case 0x6:s
+            //         // VF = (VX AND 1), then VX right shift 1
 
-        //         case 0x4:
-        //             // VX + VY, VF = 1 if overflow
+            //         break;
 
-        //             break;
+            //     case 0x7:
+            //         // VX = VY - VX, VF = 1 if VY >= VX
 
-        //         case 0x5:
-        //             // VX - VY, VF = 1 if VX >= VY
+            //         break;
 
-        //             break;
+            //     case 0xE:
+            //         // VF = ((VX right shift 7) AND 1), then VX left shit 1
 
-        //         case 0x6:
-        //             // VF = (VX AND 1), then VX right shift 1
-
-        //             break;
-
-        //         case 0x7:
-        //             // VX = VY - VX, VF = 1 if VY >= VX
-
-        //             break;
-
-        //         case 0xE:
-        //             // VF = ((VX right shift 7) AND 1), then VX left shit 1
-
-        //             break;
-        //     }
-        //     break;
+            //         break;
+            // }
+            // break;
 
         case 0x9:
             // 9XY0 - skips if VX != VY
