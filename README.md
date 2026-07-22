@@ -54,10 +54,10 @@ It's become the "hello world" of emulator development because it's simple to bui
 **In progress / TODO**
 - Remaining opcodes
 - Keyboard input
-- Scalable / resiazable window
 - Timers (delay + sound)
-- Windows build
-- Build script
+- Windows build (MingW)
+- Build scripts
+- GUI / Menu Bar (Qt)
 
 ---
 
